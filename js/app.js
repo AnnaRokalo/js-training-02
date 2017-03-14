@@ -49,17 +49,74 @@
         logAPI: function(url, msg) {
 
         },
-        logWindow: function (elem) {
+        logWindow: function (elem, type, msg) {
+            var container, elements;
             switch(elem.charAt(0)) {
                 case '.':
-                    alert('first symbol ' + elem.charAt(0) + ' - in string "' + elem + '"');
+                    elements = document.getElementsByClassName(elem.substring(1));
+                    if(elements) {
+                        container = elements[0];
+                        container.innerHTML = msg;
+                        container.style.fontSize = '14px';
+                        switch(type) {
+                            case this.TYPES[0]:
+                                container.style.color = 'blue';
+                                break;
+                            case this.TYPES[1]:
+                                container.style.color = 'orange';
+                                break;
+                            case this.TYPES[2]:
+                                container.style.color = 'red';
+                                break;
+                            default:
+                                container.style.color = 'black';
+                                alert('Неверный тип');
+                        }
+                    }
                     break;
                 case '#':
-                    alert('first symbol ' + elem.charAt(0) + ' - in string "' + elem + '"');
+                    container = document.getElementById(elem.substring(1));
+                    if(container) {
+                        container.innerHTML = msg;
+                        container.style.fontSize = '14px';
+                        switch(type) {
+                            case this.TYPES[0]:
+                                container.style.color = 'blue';
+                                break;
+                            case this.TYPES[1]:
+                                container.style.color = 'orange';
+                                break;
+                            case this.TYPES[2]:
+                                container.style.color = 'red';
+                                break;
+                            default:
+                                container.style.color = 'black';
+                                alert('Неверный тип');
+                        }
+                    }
                     break;
                 case ' ':
                 default:
-                    alert('first symbol ' + elem.charAt(0) + ' - in string "' + elem + '"');
+                    elements = document.getElementsByTagName(elem.trim());
+                    if(elements) {
+                        container = elements[0];
+                        container.innerHTML = msg;
+                        container.style.fontSize = '14px';
+                        switch(type) {
+                            case this.TYPES[0]:
+                                container.style.color = 'blue';
+                                break;
+                            case this.TYPES[1]:
+                                container.style.color = 'orange';
+                                break;
+                            case this.TYPES[2]:
+                                container.style.color = 'red';
+                                break;
+                            default:
+                                container.style.color = 'black';
+                                alert('Неверный тип');
+                        }
+                    }
             }
             
         }
@@ -76,8 +133,8 @@
     });
 
     logger.logAlertWithDate('custom function');
-    logger.logWindow('p');
-    logger.logWindow('.p');
-    logger.logWindow('#p');
-    logger.logWindow(' p');
+    logger.logWindow('p', 'info', 'i am tag p');
+    logger.logWindow('.p', 'error', 'i am tag with class p');
+    logger.logWindow('#p', 'warning', 'i am tag with id p');
+    // logger.logWindow(' p', 'info', 'i am tag p with space');
 })();

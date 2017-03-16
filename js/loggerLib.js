@@ -1,4 +1,8 @@
 function LoggerLib() {
+    window.onerror = function (message, source, lineNr) {
+        alert("Поймана ошибка!\n" +
+            "Сообщение: " + message + "\n(" + url + ":" + lineNumber + ")");
+    }
 }
 
 LoggerLib.prototype = {
@@ -17,17 +21,18 @@ LoggerLib.prototype = {
         return now;
     },
 
+    //log information in LocalStorage
     log: function (msg) {
         localStorage.clear();
         var dateStr = this.getDateTime();
         localStorage.setItem(dateStr, JSON.stringify(msg));
     },
 
-    logConsole: function (msg, type) {
+    logConsole: function (msg, msgType) {
         var dateStr = this.getDateTime();
         var consoleLogStr = dateStr+ ": " + msg;
 
-        switch(type) {
+        switch(msgType) {
             case this.TYPES[0]:
                 console.info(consoleLogStr);
                 break;
@@ -42,27 +47,57 @@ LoggerLib.prototype = {
         }
     },
 
-    logAlert: function (msg, type) {
-        switch(type) {
+    logAlert: function (msg, msgType) {
+        switch(msgType) {
             case this.TYPES[0]:
-                alert(type + ': ' + msg);
+                alert(msgType + ': ' + msg);
                 break;
             case this.TYPES[1]:
-                alert(type + ': ' + msg);
+                alert(msgType + ': ' + msg);
                 break;
             case this.TYPES[2]:
-                alert(type + ': ' + msg);
+                alert(msgType + ': ' + msg);
                 break;
             default:
                 alert('Неверный тип');
         }
     },
 
-    logAPI: function(url, msg) {
-
+    logErrors: function() {
+        // window.onerror = function (message, source, lineNr) {
+        //     alert("Поймана ошибка!\n" +
+        //         "Сообщение: " + message + "\n(" + url + ":" + lineNumber + ")");
+        // }
     },
 
-    logWindow: function (elem, type, msg) {
+    logAPI: function(url, msg, msgType) {
+        var xhr = new XMLHttpRequest();
+        var body = 'msgType=' + encodeURIComponent(msgType) +
+            ': msg=' + encodeURIComponent(msg);
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        // xhr.open('GET', 'phones.json', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState != 4) return;
+
+            button.innerHTML = 'Готово!';
+
+            if (xhr.status != 200) {
+                // обработать ошибку
+                alert(xhr.status + ': ' + xhr.statusText);
+            } else {
+                // вывести результат
+                alert("Data is transferred.");
+                // alert(xhr.responseText);
+            }
+
+        };
+        xhr.send(body);
+    },
+
+    logWindow: function (elem, msgType, msg) {
         var container, elements;
         switch(elem.charAt(0)) {
             case '.':
@@ -71,7 +106,7 @@ LoggerLib.prototype = {
                     container = elements[0];
                     container.innerHTML = msg;
                     container.style.fontSize = '14px';
-                    switch(type) {
+                    switch(msgType) {
                         case this.TYPES[0]:
                             container.style.color = 'blue';
                             break;
@@ -92,7 +127,7 @@ LoggerLib.prototype = {
                 if(container) {
                     container.innerHTML = msg;
                     container.style.fontSize = '14px';
-                    switch(type) {
+                    switch(msgType) {
                         case this.TYPES[0]:
                             container.style.color = 'blue';
                             break;
@@ -115,7 +150,7 @@ LoggerLib.prototype = {
                     container = elements[0];
                     container.innerHTML = msg;
                     container.style.fontSize = '14px';
-                    switch(type) {
+                    switch(msgType) {
                         case this.TYPES[0]:
                             container.style.color = 'blue';
                             break;

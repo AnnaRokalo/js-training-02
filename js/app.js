@@ -17,5 +17,9 @@
     };
 
     logger.logAlertWithDate('i am custom function');
+    var getPhoneBookBtn = document.getElementById('button');
 
+    getPhoneBookBtn.onclick = function() {
+        logger.logAPI('phones.json', 'error for server', 'error');
+    };
 })();

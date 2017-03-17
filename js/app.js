@@ -17,9 +17,12 @@
     };
 
     logger.logAlertWithDate('i am custom function');
-    var getPhoneBookBtn = document.getElementById('button');
-
-    getPhoneBookBtn.onclick = function() {
-        logger.logAPI('phones.json', 'error for server', 'error');
+    var sendDataBtn = document.getElementById('button');
+    sendDataBtn.onclick = function() {
+        logger.logAPI('logInfo.json', 'error send on server', 'error');
     };
+
+    window.onerror = function(message, sourse, line) {
+        logger.logAPI('logInfo.json', message, sourse);
+    }
 })();

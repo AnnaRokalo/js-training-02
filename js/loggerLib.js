@@ -1,8 +1,4 @@
 function LoggerLib() {
-    window.onerror = function (message, source, lineNr) {
-        alert("Поймана ошибка!\n" +
-            "Сообщение: " + message + "\n(" + url + ":" + lineNumber + ")");
-    }
 }
 
 LoggerLib.prototype = {
@@ -63,33 +59,21 @@ LoggerLib.prototype = {
         }
     },
 
-    logErrors: function() {
-        // window.onerror = function (message, source, lineNr) {
-        //     alert("Поймана ошибка!\n" +
-        //         "Сообщение: " + message + "\n(" + url + ":" + lineNumber + ")");
-        // }
-    },
-
     logAPI: function(url, msg, msgType) {
         var xhr = new XMLHttpRequest();
-        var body = 'msgType=' + encodeURIComponent(msgType) +
-            ': msg=' + encodeURIComponent(msg);
+        var body = '' + encodeURIComponent(msgType) + ': ' + encodeURIComponent(msg);
 
         xhr.open("POST", url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        // xhr.open('GET', 'phones.json', true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState != 4) return;
-
-            button.innerHTML = 'Готово!';
-
             if (xhr.status != 200) {
                 // обработать ошибку
                 alert(xhr.status + ': ' + xhr.statusText);
             } else {
                 // вывести результат
-                alert("Data is transferred.");
+                console.log("Data is transferred.");
                 // alert(xhr.responseText);
             }
 

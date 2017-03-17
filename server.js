@@ -1,8 +1,6 @@
 var http = require('http');
-var url = require('url');
-var querystring = require('querystring');
-var static = require('node-static');
-var file = new static.Server('.', {
+var nodeStatic = require('node-static');
+var file = new nodeStatic.Server('.', {
   cache: 0
 });
 
@@ -14,12 +12,13 @@ function accept(req, res) {
     setTimeout(function() {
       file.serve(req, res);
     }, 2000);
-  } else {
+  }
+  else if(req.url == '/logInfo.json') {
+      file.serve(req, res);
+  }  else {
     file.serve(req, res);
   }
-
 }
-
 
 // ------ запустить сервер -------
 
